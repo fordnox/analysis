@@ -130,6 +130,11 @@ class Analyzer
 
     public function getSocialPinterest(){}
 
+    public function pageContainsEmails()
+    {
+        return true;
+    }
+
     public function getBacklinksGoogle()
     {
         return 1000;

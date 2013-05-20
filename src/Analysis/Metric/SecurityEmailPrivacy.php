@@ -16,6 +16,12 @@ class SecurityEmailPrivacy extends Metric
      */
     public function process()
     {
-        $this->setOutput('Good, no email address has been found in plain text.');
+        if($this->getAnalyzer()->pageContainsEmails()) {
+            $this->setOutput('Not Good, email address has been found in plain text. You can expect spam in this email address.');
+            $this->setPassLevel('fail');
+        } else {
+            $this->setOutput('Good, no email address has been found in plain text.');
+            $this->setPassLevel('pass');
+        }
     }
 }
