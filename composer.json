@@ -5,7 +5,7 @@
     "homepage": "http://github.com/fordnox/1pagerank.com",
     "type": "library",
     "author": "Andrius Putna",
-    "license": "Apache 2.0",
+    "license": "Apache-2.0",
     "version": "0.1",
     "require": {
         "php": ">=5.3.0",
@@ -30,9 +30,13 @@
         }
     ],
     "autoload": {
+        "files": [
+            "vendor/novutec/WhoisParser/Parser.php",
+            "vendor/novutec/DomainParser/Parser.php",
+            "vendor/novutec/TypoSquatting/Typo.php"
+        ],
         "psr-0": {
-            "Analysis\\": "src/",
-            "Novutec\\": "vendor/novutec"
+            "Analysis\\": "src/"
         }
     }
 }

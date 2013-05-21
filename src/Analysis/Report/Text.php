@@ -11,9 +11,9 @@ class Text
 
     public function getOutput()
     {
-        $domain = $this->report->getDomain();
+        $page = $this->report->getPage();
         $out = '';
-        $out .= $domain->getDomain();
+        $out .= $page->getSldTld();
         $out .= PHP_EOL;
 
         foreach($this->report->getMetrics() as $category=>$metrics) {

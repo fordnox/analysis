@@ -16,11 +16,12 @@ class Analysis_ReportTest extends PHPUnit_Framework_TestCase
         $report->setPage($page);
         $report->setAnalyzer($analyzer);
         $report->setTranslation(new Analysis\Translation\En());
-//        $report->generate();
+        $report->generate();
 
-//        $reportHtml = new Analysis\Report\Text();
-//        $reportHtml->setReport($report);
-//        $out = $reportHtml->getOutput();
-//        $this->assertTrue(strlen($out) > 10);
+        $reportHtml = new Analysis\Report\Text();
+        $reportHtml->setReport($report);
+        $out = $reportHtml->getOutput();
+
+        $this->assertTrue(strlen($out) > 10);
     }
 }
