@@ -16,8 +16,6 @@ class VisitorsDistinctiveAudience extends Metric
      */
     public function process()
     {
-        $rank = $this->getAnalyzer()->getRankAlexa();
-
         $output = 'This website tends to be popular amongst:';
         $output .= '<br/>';
         $output .= 'Females aged between 25 and 34 connecting from work';

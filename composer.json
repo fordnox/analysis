@@ -10,6 +10,7 @@
     "require": {
         "php": ">=5.3.0",
         "kriswallsmith/buzz": "dev-master",
+        "seostats/seostats": "dev-master",
         "shark/simple_html_dom": "dev-master",
         "novutec/TypoSquatting": "dev-master",
         "novutec/WhoisParser": "dev-master",
@@ -33,7 +34,8 @@
         "files": [
             "vendor/novutec/WhoisParser/Parser.php",
             "vendor/novutec/DomainParser/Parser.php",
-            "vendor/novutec/TypoSquatting/Typo.php"
+            "vendor/novutec/TypoSquatting/Typo.php",
+            "vendor/seostats/seostats/src/seostats.php"
         ],
         "psr-0": {
             "Analysis\\": "src/"

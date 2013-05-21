@@ -110,7 +110,11 @@ class Analyzer
         return false;
     }
 
-    public function getRankAlexa(){}
+    public function getRankAlexa()
+    {
+        $SEOstats = new \SEOstats($this->getPage()->getUrl());
+        return $SEOstats->Alexa()->getGlobalRank();
+    }
 
     public function getSocialFacebookLikes(){}
 
