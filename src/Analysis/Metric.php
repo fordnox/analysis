@@ -192,6 +192,7 @@ class Metric
 
     private function _getKey()
     {
-        return end(explode('\\', get_class($this)));
+        $a = explode('\\', get_class($this));
+        return end($a);
     }
 }
