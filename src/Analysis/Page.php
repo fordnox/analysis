@@ -102,9 +102,8 @@ class Page
 
     private function _loadContent()
     {
-        $url = $this->getUrl();
         $browser = new \Buzz\Browser();
-        $response = $browser->get($url);
+        $response = $browser->get($this->getUrl());
         $this->headers = $response->getHeaders();
         $this->content = $response->getContent();
     }
