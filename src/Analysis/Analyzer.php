@@ -177,6 +177,12 @@ class Analyzer
         return !empty($node);
     }
 
+    public function getPageSize()
+    {
+        $content = $this->getPage()->getContent();
+        return round((strlen($content) * 8) / 1024, 2);
+    }
+
     public function getFaviconUrl()
     {
         $domain = $this->getPage()->getDomainLink();
