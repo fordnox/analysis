@@ -1,17 +1,17 @@
-[![Build Status](https://secure.travis-ci.org/fordnox/1pagerank.com.png?branch=master)](http://travis-ci.org/fordnox/1pagerank.com)
+[![Build Status](https://secure.travis-ci.org/fordnox/analysis.png?branch=master)](http://travis-ci.org/fordnox/analysis)
 
 SEO analyzer
 ------------
 
-Analyzes provided website URL and generates report for 1pagerank.com
+Analyzes provided website URL and generates report in different formats
 
 ChangeLog
 ---------
-See ChangeLog at https://github.com/fordnox/1pagerank.com/blob/master/CHANGELOG.md
+See ChangeLog at https://github.com/fordnox/analysis/blob/master/CHANGELOG.md
 
 Issues
 ------
-Please report any issues via https://github.com/fordnox/1pagerank.com/issues
+Please report any issues via https://github.com/fordnox/analysis/issues
 
 Contributing
 ------------
@@ -24,7 +24,7 @@ Contributing
 
 LICENSE and COPYRIGHT
 ---------------------
-Copyright (c) 2013 Andrius Putna (http://www.1pagerank.com)
+Copyright (c) 2013 Andrius Putna
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
