@@ -35,7 +35,7 @@
             "vendor/novutec/WhoisParser/Parser.php",
             "vendor/novutec/DomainParser/Parser.php",
             "vendor/novutec/TypoSquatting/Typo.php",
-            "vendor/seostats/seostats/src/seostats.php"
+            "vendor/seostats/seostats/SEOstats/bootstrap.php"
         ],
         "psr-0": {
             "Analysis\\": "src/"

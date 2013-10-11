@@ -17,9 +17,8 @@ class VisitorsTrafficEstimations extends Metric
     {
         $rank = $this->getAnalyzer()->getRankAlexa();
 
-        if(!$rank) {
-            $points = 0;
-        } elseif($rank > 0 && $rank < 10) {
+        $points = 0;
+        if($rank > 0 && $rank < 10) {
             $points = 99;
         } elseif($rank >= 10 && $rank < 100) {
             $points = 90;

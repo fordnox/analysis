@@ -112,7 +112,7 @@ class Analyzer
 
     public function getRankAlexa()
     {
-        $SEOstats = new \SEOstats($this->getPage()->getUrl());
+        $SEOstats = new \SEOstats\SEOstats($this->getPage()->getUrl());
         return $SEOstats->Alexa()->getGlobalRank();
     }
 
