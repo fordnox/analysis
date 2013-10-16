@@ -11,12 +11,18 @@ class SeoContentTitle extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fail';
 
+    public function getTitle()
+    {
+        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $title = $dom->find('title', 0);
+        return $title->text;
+    }
     /**
      * @todo finish
      */
     public function process()
     {
-        $length = 50;
+        $length = strlen($this->getTitle());
         $this->setPassLevel('pass');
         $this->setOutput(sprintf('Length: %s character(s)', $length));
     }
