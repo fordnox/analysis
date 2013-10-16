@@ -319,7 +319,9 @@ class Analyzer
 
     public function getMetaKeywords()
     {
-        $keywords = "email, marketing, HTML newsletters, stats, resources, postcards, campaigns, list, listserv, distribution, subscription, tool, opt-in, unsubscribe, signup, forms, hosted, database, free, account";
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
+        $keywords = $dom->find('meta[name=keywords]');
+        if ($keywords) $keywords = $keywords->content;
         return $keywords;
     }
 
