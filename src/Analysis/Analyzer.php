@@ -7,6 +7,7 @@ use Novutec\WhoisParser\Parser as WhoisParser;
 
 class Analyzer
 {
+    private $fb_stats = null;
     /**
      * @var Page $page
      */
@@ -125,23 +126,90 @@ class Analyzer
         return $SEOstats->Alexa()->getGlobalRank();
     }
 
-    public function getSocialFacebookLikes(){}
+    public function getSocialFacebookStats()
+    {
+        if ($this->fb_stats) return $this->fb_stats;
+        $url = $this->getPage()->getUrl();
+        $p = new Page();
+        $query = "select total_count,like_count,comment_count,share_count,click_count from link_stat where url='{$url}'";
+        $call = "https://api.facebook.com/method/fql.query?query=" . rawurlencode($query) . "&format=json";
+        $p->setUrl($call);
+        $data = json_decode($p->getContent());
+        return $this->fb_stats = $data[0];
+    }
 
-    public function getSocialFacebookComments(){}
+    public function getSocialFacebookLikes(){
+        $stats = $this->getSocialFacebookStats();
+        return $stats->like_count?:0;
+    }
 
-    public function getSocialFacebookShares(){}
+    public function getSocialFacebookComments(){
+        $stats = $this->getSocialFacebookStats();
+        return $stats->comment_count?:0;
+    }
 
-    public function getSocialDelicious(){}
+    public function getSocialFacebookShares(){
+        $stats = $this->getSocialFacebookStats();
+        return $stats->share_count?:0;
+    }
 
-    public function getSocialGplus(){}
+    public function getSocialDelicious(){
+        $url = $this->getPage()->getUrl();
+        $p = new Page();
+        $call = 'http://feeds.delicious.com/v2/json/urlinfo/data?url='.rawurlencode($url);
+        $p->setUrl($call);
+        $data = json_decode($p->getContent());
+        return $data[0]->total_posts?:0;
+    }
 
-    public function getSocialLinkedin(){}
+    public function getSocialGplus(){
+        $url = $this->getPage()->getUrl();
+        $p = new Page();
+        $call = 'https://plusone.google.com/_/+1/fastbutton?url='.rawurlencode($url);
+        $p->setUrl($call);
+        //@hack, as google+ does not support showing count without api key
+        preg_match( '/window\.__SSR = {c: ([\d]+)/', $p->getContent(), $matches );
 
-    public function getSocialTweets(){}
+        if( isset( $matches[0] ) )
+            return (int) str_replace( 'window.__SSR = {c: ', '', $matches[0] );
+        return 0;
+    }
 
-    public function getSocialStumbleupon(){}
+    public function getSocialLinkedin(){
+        $url = $this->getPage()->getUrl();
+        $p = new Page();
+        $call = 'http://www.linkedin.com/countserv/count/share?format=json&url='.rawurlencode($url);
+        $p->setUrl($call);
+        $data = json_decode($p->getContent());
+        return $data->count?:0;
+    }
 
-    public function getSocialPinterest(){}
+    public function getSocialTweets(){
+        $url = $this->getPage()->getUrl();
+        $p = new Page();
+        $call = 'http://urls.api.twitter.com/1/urls/count.json?url='.rawurlencode($url);
+        $p->setUrl($call);
+        $data = json_decode($p->getContent());
+        return $data->count?:0;
+    }
+
+    public function getSocialStumbleupon(){
+        $url = $this->getPage()->getUrl();
+        $p = new Page();
+        $call = 'http://www.stumbleupon.com/services/1.01/badge.getinfo?url='.rawurlencode($url);
+        $p->setUrl($call);
+        $data = json_decode($p->getContent());
+        return $data->result->views?$data->result->views:0;
+    }
+
+    public function getSocialPinterest(){
+        $url = $this->getPage()->getUrl();
+        $p = new Page();
+        $call = 'http://api.pinterest.com/v1/urls/count.json?callback=receiveCount&url='.rawurlencode($url);
+        $p->setUrl($call);
+        $data = json_decode(substr($p->getContent(), 13, -1));
+        return $data->count?:0;
+    }
 
     public function pageContainsEmails()
     {
