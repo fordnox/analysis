@@ -99,10 +99,19 @@ class Analyzer
     }
 
     public function getMobileHasAppleIcon(){
+
+        $simple_dom = $this->getPage()->getSimpleHtmlDomObject();
+        $node = $simple_dom->find('link[rel=apple-touch-icon]', 0);
+
+        if ($node && $node->href) return true;
         return false;
     }
 
     public function getMobileHasMetaViewportTag(){
+        $simple_dom = $this->getPage()->getSimpleHtmlDomObject();
+        $node = $simple_dom->find('meta[name=viewport]', 0);
+
+        if ($node && $node->content) return true;
         return false;
     }
 
@@ -187,14 +196,14 @@ class Analyzer
     {
         $domain = $this->getPage()->getDomainLink();
         $favicon = $domain.'/favicon.ico';
+
+        $simple_dom = $this->getPage()->getSimpleHtmlDomObject();
+        $node = $simple_dom->find('link[rel=icon], link[rel=shortcut], link[rel="shortcut icon"]', 0);
+        if ($node && $node->href) $favicon = strpos($node->href, '//')!==false?$node->href:$domain.($node->href[0] != '/'?'/':'').$node->href;
+        if ($favicon[0] == '/') $favicon = 'http:'.$favicon;
         if($this->urlExists($favicon)) {
             return $favicon;
         }
-
-        //@todo other ways to determine favicon
-//        $simple_dom = $this->getPage()->getSimpleHtmlDomObject();
-//        $node = $simple_dom->getElementByTagName('link');
-//        $node->dump_node();
 
         return false;
     }
@@ -226,5 +235,27 @@ class Analyzer
 //        $result = $Parser->lookup($asn);
 
         return $result;
+    }
+
+    public function getServerIpLocation()
+    {
+        $ip = gethostbyname($this->getPage()->getDomainName());
+        return array('ip'=>$ip, 'location'=>'Dallas');
+    }
+
+    public function isIpSpammer()
+    {
+        return true;
+    }
+
+    public function getMetaKeywords()
+    {
+        $keywords = "email, marketing, HTML newsletters, stats, resources, postcards, campaigns, list, listserv, distribution, subscription, tool, opt-in, unsubscribe, signup, forms, hosted, database, free, account";
+        return $keywords;
+    }
+
+    public function getTextHtmlRatio()
+    {
+        return 6.2;
     }
 }
