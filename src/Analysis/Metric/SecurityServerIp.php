@@ -16,6 +16,8 @@ class SecurityServerIp extends Metric
      */
     public function process()
     {
-        $this->setOutput('50.22.201.236 Server location: ￼ DALLAS');
+        $info = $this->getAnalyzer()->getServerIpLocation();
+        $this->setOutput(sprintf('%s Server location: %s', $info['ip'], $info['location']));
+        return true;
     }
 }

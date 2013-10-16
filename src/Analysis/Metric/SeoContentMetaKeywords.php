@@ -16,7 +16,7 @@ class SeoContentMetaKeywords extends Metric
      */
     public function process()
     {
-        $keywords = "email, marketing, HTML newsletters, stats, resources, postcards, campaigns, list, listserv, distribution, subscription, tool, opt-in, unsubscribe, signup, forms, hosted, database, free, account";
+        $keywords = $this->getAnalyzer()->getMetaKeywords();
         $length = strlen($keywords);
         $this->setOutput(sprintf('<p>%s</p><p>Length: <strong>%s</strong> character(s)</p>', $keywords, $length));
     }

@@ -16,6 +16,17 @@ class SecuritySpamBlock extends Metric
      */
     public function process()
     {
-        $this->setOutput('Your Server IP is not Blacklisted in the <a href="http://www.stopforumspam.com/" target="_blank">Spammer Directory</a>.');
+        $spammer = $this->getAnalyzer()->isIpSpammer();
+        if ($spammer) {
+            $output = 'Your Server IP is Blacklisted in the <a href="http://www.stopforumspam.com/" target="_blank">Spammer Directory</a>.';
+            $this->setPassLevel('fail');
+            $response = false;
+        } else {
+            $output = 'Your Server IP is not Blacklisted in the <a href="http://www.stopforumspam.com/" target="_blank">Spammer Directory</a>.';
+            $this->setPassLevel('pass');
+            $response = true;
+        }
+        $this->setOutput($output);
+        return $response;
     }
 }

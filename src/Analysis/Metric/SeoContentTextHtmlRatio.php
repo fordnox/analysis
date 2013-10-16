@@ -16,8 +16,12 @@ class SeoContentTextHtmlRatio extends Metric
      */
     public function process()
     {
-        $ratio = 6.22;
-        $this->setPassLevel('fail');
+        $ratio = $this->getAnalyzer()->getTextHtmlRatio();
+        if ($ratio < 20){
+            $this->setPassLevel('fail');
+        } else {
+            $this->setPassLevel('pass');
+        }
         $this->setOutput($ratio.'%');
     }
 }
