@@ -11,6 +11,16 @@ class SeoContentHeadings extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'pass';
 
+    public function getHeadings()
+    {
+        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $headings = array();
+        for ($h = 1; $h<=6; $h++) {
+            $i = 0;
+            while ($data = $dom->find('h'.$h, $i++)) $headings['h'.$h][] = $data->text?:strip_tags($data);
+        }
+        return $headings;
+    }
     /**
      * @todo finish
      */
@@ -18,33 +28,26 @@ class SeoContentHeadings extends Metric
     {
         $this->setPassLevel('pass');
 
+        $headings = $this->getHeadings();
+
         $output='
         <table class="table table-bordered">
             <thead>
-            <tr>
-                <th>H1</th>
-                <th>H2</th>
-                <th>H3</th>
-                <th>H4</th>
-                <th>H5</th>
-            </tr>
+            <tr>';
+        $names = array_keys($headings);
+        foreach ($names as $name) $output .= sprintf('<th>%s</th>', strtoupper($name));
+        $output .= '</tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>1</td>
-                <td>4</td>
-                <td>3</td>
-            </tr>
+            <tr>';
+        foreach ($headings as $heading) $output .= sprintf('<th>%d</th>', count($heading));
+        $output .= '</tr>
             </tbody>
-        </table>
+        </table>';
 
-        <p><strong>[H1]</strong> MailChimp Email Marketing and Email List Manager, MailChimp.com [H1] Easy Email Newsletters</p>
-        <p><strong>[H5]</strong>  About Us
-        <p><strong>[H5]</strong>  Connect With Us
-        <p><strong>[H5]</strong>  Contact Us [H5] Legal Info
-        ';
+        foreach ($headings as $name => $heading) {
+            foreach ($heading as $text) $output .= sprintf('<p><strong>%s</strong> %s</p>', strtoupper($name), $text);
+        }
 
         $this->setOutput($output);
     }
