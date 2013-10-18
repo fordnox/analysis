@@ -314,7 +314,12 @@ class Analyzer
 
     public function isIpSpammer()
     {
-        return true;
+        $page = $this->getPage();
+        $ip = gethostbyname($page->getDomainName());
+        $p = new Page();
+        $p->setUrl('http://www.stopforumspam.com/api?ip='.$ip);
+        $xml = simplexml_load_string($p->getContent());
+        return $xml->appears == 'yes';
     }
 
     public function getMetaKeywords()
