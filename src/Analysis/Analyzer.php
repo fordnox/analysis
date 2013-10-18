@@ -327,6 +327,11 @@ class Analyzer
 
     public function getTextHtmlRatio()
     {
-        return 6.2;
+        $content = $this->getPage()->getContent();
+        $text = strip_tags(preg_replace(array('|<style[^>]*>.*</style>|Uims', '|<script[^>]*>.*</script>|Uims'), '', $content));
+        while(strpos($text, '  ')!==false) $text = str_replace('  ', ' ', $text);
+        $ratio = strlen($content)/strlen($text)?:1;
+        $ratio = round($ratio, 2);
+        return $ratio;
     }
 }
