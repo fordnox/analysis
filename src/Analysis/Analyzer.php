@@ -240,12 +240,22 @@ class Analyzer
 
     public function getDomainExpirationDate()
     {
-        return date('c');
+        $domain = $this->getPage()->getSldTld();
+
+        $Parser = new WhoisParser();
+        $Parser->setFormat('array');
+        $result = $Parser->lookup($domain);
+        return $result['expires'];
     }
 
     public function getDomainRegistrationDate()
     {
-        return date('c');
+        $domain = $this->getPage()->getSldTld();
+
+        $Parser = new WhoisParser();
+        $Parser->setFormat('array');
+        $result = $Parser->lookup($domain);
+        return $result['created'];
     }
 
     public function isPageUrlUserFriendly()
