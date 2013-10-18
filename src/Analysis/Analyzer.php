@@ -219,17 +219,23 @@ class Analyzer
 
     public function getBacklinksGoogle()
     {
-        return 1000;
+        $url = $this->getPage()->getUrl();
+        $backlinks = \SEOstats\Services\Google::getBacklinksTotal($url);
+        return $backlinks;
     }
 
     public function getIndexedPagesGoogle()
     {
-        return 1000;
+        $url = $this->getPage()->getUrl();
+        $index = \SEOstats\Services\Google::getSearchResultsTotal($url);
+        return $index;
     }
 
     public function getRankPagerank()
     {
-        return 5;
+        $url = $this->getPage()->getUrl();
+        $rank = \SEOstats\Services\Google::getPageRank($url);
+        return $rank;
     }
 
     public function getDomainExpirationDate()
