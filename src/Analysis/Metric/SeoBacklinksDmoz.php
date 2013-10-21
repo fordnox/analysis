@@ -11,12 +11,29 @@ class SeoBacklinksDmoz extends Metric
     protected $solve_level      = 'very-hard';
     protected $pass_level       = 'pass';
 
+    private function getBacklinks()
+    {
+        $url = $this->getAnalyzer()->getPage()->getUrl();
+        $p = new \Analysis\Page();
+        $p->setUrl('http://www.dmoz.org/search?cat=all&type=next&all=no&start=0&q='.$url);
+        $node = $p->getSimpleHtmlDomObject()->find('ol[start=1]',0);
+        if (!$node) return 0;
+        $n = 0;
+        while(is_object($node) && $node->find('li', $n)) $n++;
+        return $n;
+    }
     /**
      * @todo finish
      */
     public function process()
     {
-        $this->setPassLevel('fail');
-        $this->setOutput('No');
+        $backlinks = $this->getBacklinks();
+        if ($backlinks == 0) {
+            $this->setPassLevel('fail');
+            $this->setOutput('No');
+        } else {
+            $this->setPassLevel('pass');
+            $this->setOutput(sprintf('Backlinks on DMOZ: %d',$backlinks));
+        }
     }
 }
