@@ -11,12 +11,33 @@ class TechnologiesW3CValidity extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fail';
 
-    /**
-     * @todo finish
-     */
+    private function getError()
+    {
+        $validator = $this->getAnalyzer()->getW3CValidator()->getSimpleHtmlDomObject();
+        if ($error = $validator->find('#results', 0)) return trim($error->innerText());
+        return false;
+    }
+
+    private function getResult()
+    {
+        $validator = $this->getAnalyzer()->getW3CValidator()->getSimpleHtmlDomObject();
+        if ($error = $validator->find('td.invalid', 0)) return trim($error->innerText());
+        if ($success = $validator->find('.valid', 0)){
+            return trim($success->innerText()).' '.trim($validator->find('td.valid', 0)->innerText());
+        }
+        return 'Could not validate given site.';
+    }
+
     public function process()
     {
-        $this->setPassLevel('fail');
-        $this->setOutput('Invalid: 10 Errors, 2 Warning(s)');
+        $output = '';
+        if ($error = $this->getError()) {
+            $this->setPassLevel('fail');
+            $output.=$error.' ';
+        } else {
+            $this->setPassLevel('pass');
+        }
+        $output .= $this->getResult();
+        $this->setOutput($output);
     }
 }
