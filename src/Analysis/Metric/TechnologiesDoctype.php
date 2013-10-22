@@ -11,11 +11,24 @@ class TechnologiesDoctype extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fyi';
 
-    /**
-     * @todo finish
-     */
+    private function getDoctype()
+    {
+        $validator = $this->getAnalyzer()->getW3CValidator();
+        if ($validator) $validator = $validator->getSimpleHtmlDomObject();
+        $doctype = null;
+        if ($validator) $doctype = $validator->find('#doctype',0);
+        if ($doctype) $doctype = $doctype->parent;
+        if ($doctype) $doctype = $doctype->parent;
+        if ($doctype) $doctype = $doctype->find('td', 0);
+        if ($doctype) $doctype = $doctype->innerText();
+        if (!$doctype) $doctype = 'Unknown';
+
+        return $doctype;
+    }
+
     public function process()
     {
-        $this->setOutput('HTML5');
+        $doctype = $this->getDoctype();
+        $this->setOutput($doctype);
     }
 }

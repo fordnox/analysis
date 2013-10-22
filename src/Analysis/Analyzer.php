@@ -355,4 +355,14 @@ class Analyzer
         $ratio = round($ratio, 2);
         return $ratio;
     }
+
+    public function getW3CValidator()
+    {
+        $p = new Page();
+        // @hack to access w3c
+        ini_set('user_agent', 'Mozilla/5.0 (PHP Analyzer) Version 1.0');
+        $p->setUrl('http://validator.w3.org/check?uri='.$this->getPage()->getUrl());
+
+        return $p;
+    }
 }
