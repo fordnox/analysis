@@ -325,7 +325,10 @@ class Analyzer
     public function getServerIpLocation()
     {
         $ip = gethostbyname($this->getPage()->getDomainName());
-        return array('ip'=>$ip, 'location'=>'Dallas');
+        $p = new Page();
+        $p->setUrl('http://freegeoip.net/json/'.$ip);
+        $data = json_decode($p->getContent(), true);
+        return $data;
     }
 
     public function isIpSpammer()

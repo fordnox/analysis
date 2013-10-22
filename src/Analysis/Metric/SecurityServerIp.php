@@ -11,13 +11,10 @@ class SecurityServerIp extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fyi';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $info = $this->getAnalyzer()->getServerIpLocation();
-        $this->setOutput(sprintf('%s Server location: %s', $info['ip'], $info['location']));
+        $this->setOutput(sprintf('%s Server location: %s', $info['ip'], $info['city']?:$info['country_name']));
         return true;
     }
 }
