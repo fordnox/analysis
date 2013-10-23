@@ -2,6 +2,7 @@
 namespace Analysis\Metric;
 use Analysis\Metric;
 use Analysis\Exception;
+use Analysis\Page;
 
 class TechnologiesTechnologies extends Metric
 {
@@ -11,20 +12,88 @@ class TechnologiesTechnologies extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fyi';
 
-    /**
-     * @todo finish
-     */
+    private function containsAnalytics()
+    {
+        $content = $this->getAnalyzer()->getPage()->getContent();
+        return strpos($content,'pageTracker._trackPageview();') !== false || strpos($content, "'.google-analytics.com/ga.js';") !== false;
+    }
+    private function getHeaders()
+    {
+        $full_headers = array();
+        $headers = $this->getAnalyzer()->getPage()->getResponseHeaders();
+        foreach ($headers as $header) {
+            list($key, $val) = explode(': ', $header, 2);
+            $full_headers[$key] = $val;
+        }
+        return $full_headers;
+    }
+    private function getServer()
+    {
+        $headers = $this->getHeaders();
+        return $headers['Server'];
+    }
+
+    private function getPhpVersion()
+    {
+        $headers = $this->getHeaders();
+        return $headers['X-Powered-By'];
+    }
+
+    private function getJsCode()
+    {
+        $page = $this->getAnalyzer()->getPage();
+        $dom = $page->getSimpleHtmlDomObject();
+
+        $js = '';
+        $scripts = $dom->find('script');
+        foreach ($scripts as $script)
+        {
+            if ($script->innerText()) $js .= $script->innerText();
+            if ($script->src) {
+                $uri = $script->src;
+                if ($uri[0].$uri[1] == '//') $uri = 'http:'.$uri;
+                if ($uri[0] == '/') $uri = $page->getDomainLink().$uri;
+                if (!strstr($uri, '://')) $uri = $page->getUrl().'/'.$uri;
+                $p = new Page();
+                $p->setUrl($uri);
+                $js .= $p->getContent().' ';
+            }
+        }
+        return $js;
+    }
+
+    private function containsJQuery($js)
+    {
+        return strpos($js,'.jQuery') !== false;
+    }
+
+    private function containsRequireJS($js)
+    {
+        return strpos($js, 'RequireJS') !== false;
+    }
+
     public function process()
     {
-        $output='
+        $server = $this->getServer();
+        $php = $this->getPhpVersion();
+        $analytics = $this->containsAnalytics();
+        $js = $this->getJsCode();
+        $jQuery = $this->containsJQuery($js);
+        $require = $this->containsRequireJS($js);
+        $output=sprintf('
         <ul class="unstyled">
-            <li><i class="icon-ok"></i> Google Analytics</li>
-            <li><i class="icon-ok"></i> Apache 2</li>
-            <li><i class="icon-ok"></i> PHP 5.3</li>
-            <li><i class="icon-ok"></i> jQuery</li>
-            <li><i class="icon-ok"></i> RequireJS</li>
+            <li><i class="icon-%s"></i> %s</li>
+            <li><i class="icon-%s"></i> %s</li>
+            <li><i class="icon-%s"></i> %s</li>
+            <li><i class="icon-%s"></i> %s</li>
+            <li><i class="icon-%s"></i> %s</li>
         </ul>
-        ';
+        ',
+        $analytics?'ok':'minus', 'Google Analytics',
+        $server?'ok':'minus',    $server?$server:'Apache 2',
+        $php?'ok':'minus',       $php?$php:'PHP 5.3',
+        $jQuery?'ok':'minus',    'jQuery',
+        $require?'ok':'minus',   'RequireJS');
         $this->setOutput($output);
     }
 }
