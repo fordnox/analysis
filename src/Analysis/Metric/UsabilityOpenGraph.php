@@ -11,12 +11,21 @@ class UsabilityOpenGraph extends Metric
     protected $solve_level      = 'hard';
     protected $pass_level       = 'pass';
 
+    private function containsOg(){
+        $content = $this->getAnalyzer()->getPage()->getContent();
+        return stripos($content, '<og:')!==false;
+    }
     /**
-     * @todo finish
+     * @todo finish (style)
      */
     public function process()
     {
-        $this->setPassLevel('fail');
-        $this->setOutput('Missing');
+        if ($this->containsOg()){
+            $this->setPassLevel('pass');
+            $this->setOutput('Open Graph tags found');
+        } else {
+            $this->setPassLevel('fail');
+            $this->setOutput('Missing');
+        }
     }
 }
