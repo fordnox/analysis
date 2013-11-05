@@ -11,12 +11,26 @@ class UsabilityLanguage extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'pass';
 
-    /**
-     * @todo finish
-     */
+    private function getContentLanguage($declared)
+    {
+        $page = $this->getAnalyzer()->getPage();
+        $page->setRequestHeaders(array('Http-Accept-Language' => $declared));
+        $lang = $page->getHeader('Content-Language');
+        $dom = $page->getSimpleHtmlDomObject();
+        $html = $dom->find('html', 0);
+        $meta = $dom->find('meta[http-equiv="Content-Language"]');
+        $lang = $meta->content?$meta->content:$lang;
+        $lang = $html->{'xml:lang'}?$html->{'xml:lang'}:$lang;
+        $lang = $html->lang?$html->lang:$lang;
+        return $lang;
+    }
+
     public function process()
     {
-        $this->setPassLevel('pass');
-        $this->setOutput('Declared: en </br>Detected: en');
+        $declare = 'en-US';
+        $detect = $this->getContentLanguage($declare);
+        if (!$detect) $detect = 'none';
+        if ($declare == $detect) $this->setPassLevel('pass');
+        $this->setOutput('Declared: '.$declare.' </br>Detected: '.$detect);
     }
 }

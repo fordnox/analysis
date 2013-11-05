@@ -35,6 +35,16 @@ class Page
      */
     private $domain_link;
 
+    /**
+     * @var \Buzz\Message\Response $browser contains browser response object
+     */
+    private $response = null;
+
+    /**
+     * @var array $request_headers to be sent in request
+     */
+    private $request_headers;
+
     public function setUrl($url)
     {
         $this->url = $url;
@@ -43,6 +53,12 @@ class Page
         $this->domain_name = $d['host'];
         $this->domain_link = $d['scheme'].'://'.$d['host'];
         $this->_setSldTld();
+    }
+
+    public function setRequestHeaders($headers=array())
+    {
+        if (!is_array($headers)) $headers = array($headers);
+        $this->request_headers = $headers;
     }
 
     public function getUrl()
@@ -69,6 +85,14 @@ class Page
             $this->_loadContent();
         }
         return $this->headers;
+    }
+
+    public function getHeader($header)
+    {
+        if(empty($this->content)) {
+            $this->_loadContent();
+        }
+        return $this->response->getHeader($header);
     }
 
     public function getDomainTld($with_dot = true)
@@ -103,9 +127,10 @@ class Page
     private function _loadContent()
     {
         $browser = new \Buzz\Browser();
-        $response = $browser->get($this->getUrl());
+        $response = $browser->get($this->getUrl(), $this->request_headers);
         $this->headers = $response->getHeaders();
         $this->content = $response->getContent();
+        $this->response = $response;
     }
 
     public function getSldTld()
