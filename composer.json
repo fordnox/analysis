@@ -14,7 +14,8 @@
         "shark/simple_html_dom": "dev-master",
         "novutec/TypoSquatting": "dev-master",
         "novutec/WhoisParser": "dev-master",
-        "novutec/DomainParser": "dev-master"
+        "novutec/DomainParser": "dev-master",
+        "mf2/mf2": "0.2.*"
     },
     "repositories": [
         {
