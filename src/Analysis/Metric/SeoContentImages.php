@@ -15,22 +15,26 @@ class SeoContentImages extends Metric
     {
         $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
         $n = 0;
-        while($dom->find('img',$n)) $n++;
-        return $n;
+        $alt = 0;
+        while($im=$dom->find('img',$n)){
+            if (!$im->alt) $alt++;
+            $n++;
+        }
+        return array('images'=>$n, 'alt'=>$alt);
     }
-    /**
-     * @todo finish
-     */
+
     public function process()
     {
-        $images = $this->getImagesCount();
+        list($images, $alt) = $this->getImagesCount();
         if (!$images) {
-            $this->setOutput('No images found on this website.');
+            $output = 'No images found on this website.';
             $this->setPassLevel('fail');
         } else {
-            $this->setOutput(sprintf('We found %d images on this website', $images));
+            $output = sprintf('We found %d images on this website', $images);
             $this->setPassLevel('pass');
         }
+        if ($alt) $output .= '<br/>' . sprintf('We found that %d images have no alt attribute, or it is empty', $alt);
+        $this->setOutput($output);
 
     }
 }
