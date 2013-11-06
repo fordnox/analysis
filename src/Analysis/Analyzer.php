@@ -260,6 +260,8 @@ class Analyzer
 
     public function isPageUrlUserFriendly()
     {
+        $url = $this->getPage()->getUrl();
+        if (strpos($url, '?') !== false || strpos($url, '&') !== false || strpos($url, '=') !== false || strpos($url, '.php') !== false) return false;
         return true;
     }
 
