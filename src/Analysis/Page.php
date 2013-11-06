@@ -43,7 +43,7 @@ class Page
     /**
      * @var array $request_headers to be sent in request
      */
-    private $request_headers;
+    private $request_headers = array();
 
     public function setUrl($url)
     {

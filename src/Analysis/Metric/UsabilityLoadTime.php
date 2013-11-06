@@ -11,11 +11,13 @@ class UsabilityLoadTime extends Metric
     protected $solve_level      = 'hard';
     protected $pass_level       = 'pass';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
-        $this->setOutput('0.01 second(s) (1465.37 Kb/s)');
+        $start = microtime(TRUE);
+        $content = $this->getAnalyzer()->getPage()->getContent();
+        $end = microtime(TRUE);
+        $diff = $end-$start;
+        $speed = strlen($content)/1024/($diff?$diff:1);
+        $this->setOutput(sprintf('%.2f second(s) (%.2f Kb/s)', $diff, $speed));
     }
 }
