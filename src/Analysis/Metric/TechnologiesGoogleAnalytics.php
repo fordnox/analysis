@@ -16,7 +16,14 @@ class TechnologiesGoogleAnalytics extends Metric
      */
     public function process()
     {
-        $this->setPassLevel('fail');
-        $this->setOutput('No');
+        $analytics = $this->getAnalyzer()->containsAnalytics();
+        if (!$analytics) {
+            $this->setPassLevel('fail');
+            $output = 'No';
+        } else {
+            $this->setPassLevel('pass');
+            $output = 'Yes';
+        }
+        $this->setOutput($output);
     }
 }

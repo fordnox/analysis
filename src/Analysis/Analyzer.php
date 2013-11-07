@@ -398,4 +398,10 @@ class Analyzer
         $headers = $this->getHeaders();
         return $headers['Server'];
     }
+
+    public function containsAnalytics()
+    {
+        $content = $this->getPage()->getContent();
+        return strpos($content,'pageTracker._trackPageview();') !== false || strpos($content, "'.google-analytics.com/ga.js';") !== false;
+    }
 }

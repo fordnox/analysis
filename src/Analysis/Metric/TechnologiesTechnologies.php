@@ -12,12 +12,6 @@ class TechnologiesTechnologies extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fyi';
 
-    private function containsAnalytics()
-    {
-        $content = $this->getAnalyzer()->getPage()->getContent();
-        return strpos($content,'pageTracker._trackPageview();') !== false || strpos($content, "'.google-analytics.com/ga.js';") !== false;
-    }
-
     private function getPhpVersion()
     {
         $headers = $this->getAnalyzer()->getHeaders();
@@ -61,7 +55,7 @@ class TechnologiesTechnologies extends Metric
     {
         $server = $this->getAnalyzer()->getServer();
         $php = $this->getPhpVersion();
-        $analytics = $this->containsAnalytics();
+        $analytics = $this->getAnalyzer()->containsAnalytics();
         $js = $this->getJsCode();
         $jQuery = $this->containsJQuery($js);
         $require = $this->containsRequireJS($js);
