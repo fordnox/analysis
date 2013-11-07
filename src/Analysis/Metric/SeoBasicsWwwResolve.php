@@ -2,6 +2,7 @@
 namespace Analysis\Metric;
 use Analysis\Metric;
 use Analysis\Exception;
+use Analysis\Page;
 
 class SeoBasicsWwwResolve extends Metric
 {
@@ -11,9 +12,26 @@ class SeoBasicsWwwResolve extends Metric
     protected $solve_level      = 'hard';
     protected $pass_level       = 'fyi';
 
-    /**
-     * @todo finish
-     */
+    private function checkWww()
+    {
+        $page = $this->getAnalyzer()->getPage();
+        $url = $page->getUrl();
+        if (preg_match('|://www\.|i', $url)) {
+            $www = $url;
+            $url = preg_replace('|://www\.|', '://', $url);
+        } else {
+            $www = preg_replace('|://|', '://www.', $url);
+        }
+        $new_page = new Page();
+        $www_page = new Page();
+        $new_page->setUrl($url);
+        $www_page->setUrl($www);
+        /**
+         * @todo implement check for redirect, not only content
+         */
+        return $new_page->getContent() == $www_page->getContent();
+    }
+
     public function process()
     {
         $this->setPassLevel('pass');
