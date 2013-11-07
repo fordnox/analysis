@@ -45,6 +45,8 @@ class Page
      */
     private $request_headers = array();
 
+    private $textContent;
+
     public function setUrl($url)
     {
         $this->url = $url;
@@ -122,6 +124,16 @@ class Page
     public function getSimpleHtmlDomObject()
     {
         return \str_get_html($this->getContent());
+    }
+
+    public function getTextContent()
+    {
+        if ($this->textContent) return $this->textContent;
+        $content = $this->getContent();
+        $text = strip_tags(preg_replace(array('|<style[^>]*>.*</style>|Uims', '|<script[^>]*>.*</script>|Uims', '/&[a-z0-9#]{2,4};/i'), '', $content));
+        $text = str_replace(array(chr(10), chr(13), chr(9)), ' ', $text);
+        while(strpos($text, '  ')!==false) $text = str_replace('  ', ' ', $text);
+        return $this->textContent = $text;
     }
 
     private function _loadContent()

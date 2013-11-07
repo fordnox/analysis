@@ -353,9 +353,9 @@ class Analyzer
 
     public function getTextHtmlRatio()
     {
-        $content = $this->getPage()->getContent();
-        $text = strip_tags(preg_replace(array('|<style[^>]*>.*</style>|Uims', '|<script[^>]*>.*</script>|Uims'), '', $content));
-        while(strpos($text, '  ')!==false) $text = str_replace('  ', ' ', $text);
+        $page = $this->getPage();
+        $content = $page->getContent();
+        $text = $page->getTextContent();
         $ratio = strlen($content)/strlen($text)?:1;
         $ratio = round($ratio, 2);
         return $ratio;
@@ -369,5 +369,16 @@ class Analyzer
         $p->setUrl('http://validator.w3.org/check?uri='.$this->getPage()->getUrl());
 
         return $p;
+    }
+
+    public function getTagCloud($limit = 10)
+    {
+        $text = $this->getPage()->getTextContent();
+        $text = mb_strtolower($text);
+        preg_match_all("/[^\s^0-9.;:\/()!?$#@%*_`~|\-,]{4,}/", $text, $matches);
+        $values = array_count_values($matches[0]);
+        arsort($values);
+        $result = array_slice($values, 0, $limit);
+        return $result;
     }
 }
