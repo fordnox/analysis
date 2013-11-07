@@ -11,12 +11,23 @@ class UsabilityDublinCore extends Metric
     protected $solve_level      = 'hard';
     protected $pass_level       = 'pass';
 
-    /**
-     * @todo finish
-     */
+    private function hasDublinCore()
+    {
+        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dc = $dom->find('meta[name^=dc.], meta[name^=DC.]', 0);
+        return $dc;
+    }
+
     public function process()
     {
-        $this->setPassLevel('fail');
-        $this->setOutput('Missing');
+        $dc = $this->hasDublinCore();
+        if ($dc) {
+            $output = 'Found Dublin Core tags!';
+            $this->setPassLevel('pass');
+        } else {
+            $output = 'Dublin Core tags are missing!';
+            $this->setPassLevel('fail');
+        }
+        $this->setOutput($output);
     }
 }
