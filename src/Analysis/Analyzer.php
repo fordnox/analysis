@@ -381,4 +381,21 @@ class Analyzer
         $result = array_slice($values, 0, $limit);
         return $result;
     }
+
+    public function getHeaders()
+    {
+        $full_headers = array();
+        $headers = $this->getPage()->getResponseHeaders();
+        foreach ($headers as $header) {
+            list($key, $val) = explode(': ', $header, 2);
+            $full_headers[$key] = $val;
+        }
+        return $full_headers;
+    }
+
+    public function getServer()
+    {
+        $headers = $this->getHeaders();
+        return $headers['Server'];
+    }
 }

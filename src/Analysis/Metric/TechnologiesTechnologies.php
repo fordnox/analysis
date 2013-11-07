@@ -17,25 +17,10 @@ class TechnologiesTechnologies extends Metric
         $content = $this->getAnalyzer()->getPage()->getContent();
         return strpos($content,'pageTracker._trackPageview();') !== false || strpos($content, "'.google-analytics.com/ga.js';") !== false;
     }
-    private function getHeaders()
-    {
-        $full_headers = array();
-        $headers = $this->getAnalyzer()->getPage()->getResponseHeaders();
-        foreach ($headers as $header) {
-            list($key, $val) = explode(': ', $header, 2);
-            $full_headers[$key] = $val;
-        }
-        return $full_headers;
-    }
-    private function getServer()
-    {
-        $headers = $this->getHeaders();
-        return $headers['Server'];
-    }
 
     private function getPhpVersion()
     {
-        $headers = $this->getHeaders();
+        $headers = $this->getAnalyzer()->getHeaders();
         return $headers['X-Powered-By'];
     }
 
@@ -74,7 +59,7 @@ class TechnologiesTechnologies extends Metric
 
     public function process()
     {
-        $server = $this->getServer();
+        $server = $this->getAnalyzer()->getServer();
         $php = $this->getPhpVersion();
         $analytics = $this->containsAnalytics();
         $js = $this->getJsCode();

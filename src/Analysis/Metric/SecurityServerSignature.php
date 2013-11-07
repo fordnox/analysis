@@ -16,6 +16,11 @@ class SecurityServerSignature extends Metric
      */
     public function process()
     {
-        $this->setOutput('No');
+        if ($this->getAnalyzer()->getServer()) {
+            $output = 'Yes';
+        } else {
+            $output = 'No';
+        }
+        $this->setOutput($output);
     }
 }
