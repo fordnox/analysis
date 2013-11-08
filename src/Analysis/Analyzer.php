@@ -96,6 +96,16 @@ class Analyzer
     }
 
     public function getMobileHasCss(){
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
+        $screens = $dom->find('meta[content*=max-width], meta[content*=max-device-width]');
+        foreach ($screens as $screen) {
+            if(preg_match_all('|max-(device-)?width:\s*(\d+)px|', $screen->content, $matches)) {
+                foreach ($matches[2] as $match) {
+                    if ($match < 501) return true;
+                }
+            }
+
+        }
         return false;
     }
 
