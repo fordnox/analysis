@@ -11,12 +11,28 @@ class SeoBasicsIpCanonicalization extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fyi';
 
+    private function isCanonicalized()
+    {
+        $page = $this->getAnalyzer()->getPage();
+        $domain = $page->getDomainName();
+        $ip = gethostbyname($domain);
+        $page_ip = new \Analysis\Page();
+        $page_ip->setUrl('http://'.$ip);
+
+        return $page->getContent() == $page_ip->getContent();
+    }
+
     /**
-     * @todo finish
+     * @todo check if redirect exists
      */
     public function process()
     {
-        $this->setPassLevel('pass');
-        $this->setOutput('Yes');
+        if ($this->isCanonicalized()) {
+            $this->setPassLevel('pass');
+            $this->setOutput('Yes');
+        } else {
+            $this->setPassLevel('fail');
+            $this->setOutput('No');
+        }
     }
 }
