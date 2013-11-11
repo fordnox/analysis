@@ -19,12 +19,9 @@ class SeoBasicsIpCanonicalization extends Metric
         $page_ip = new \Analysis\Page();
         $page_ip->setUrl('http://'.$ip);
 
-        return $page->getContent() == $page_ip->getContent();
+        return $page->getLastEffectiveUrl() == $page_ip->getLastEffectiveUrl();
     }
 
-    /**
-     * @todo check if redirect exists
-     */
     public function process()
     {
         if ($this->isCanonicalized()) {
