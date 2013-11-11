@@ -96,7 +96,11 @@ class Analyzer
     }
 
     public function getMobileLoadTime(){
-        return 5;
+        ini_set('user_agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3');
+        $start = microtime(true);
+        $this->getPage()->getContent();
+        $diff = microtime(true) - $start;
+        return round($diff * 1000);
     }
 
     public function getMobileHasCss(){
@@ -131,7 +135,7 @@ class Analyzer
     }
 
     public function getMobileHasRedirection(){
-        return false;
+        return $this->getPage()->getRedirection() != null;
     }
 
     public function getRankAlexa()

@@ -150,6 +150,37 @@ class Page
         return $this->sld_tld;
     }
 
+
+    public function getRedirection()
+    {
+        $ch = curl_init();
+        curl_setopt_array($ch, array(
+            CURLOPT_URL => $this->getUrl(),
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_HEADER => true,
+            CURLOPT_RETURNTRANSFER => true
+        ));
+        $response = curl_exec($ch);
+        preg_match_all('/^Location:(.*)$/mi', $response, $matches);
+        curl_close($ch);
+        return $matches[1];
+    }
+
+    public function getLastEffectiveUrl()
+    {
+        $ch = curl_init();
+        curl_setopt_array($ch, array(
+            CURLOPT_URL => $this->getUrl(),
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HEADER => true,
+            CURLOPT_RETURNTRANSFER => true
+        ));
+        curl_exec($ch);
+        $last_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        curl_close($ch);
+        return $last_url;
+    }
+
     /**
      * @see https://raw.github.com/gavingmiller/second-level-domains/master/SLDs.csv
      */
