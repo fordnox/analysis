@@ -55,7 +55,11 @@ class Analyzer
     }
 
     private function isDomainAvailableForRegistration($domain){
-        return false;
+
+        if (checkdnsrr($domain, 'ANY')) return false;
+        $whois = $this->getWhois($domain);
+        if ($whois['nameserver'] || $whois['expires'] || $whois['contacts']) return false;
+        return true;
     }
 
     private function getPopularDomainTlds(){
