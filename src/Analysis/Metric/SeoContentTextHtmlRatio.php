@@ -11,9 +11,6 @@ class SeoContentTextHtmlRatio extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fail';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $ratio = $this->getAnalyzer()->getTextHtmlRatio();

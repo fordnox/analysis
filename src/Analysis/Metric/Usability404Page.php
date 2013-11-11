@@ -12,9 +12,6 @@ class Usability404Page extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fail';
 
-    /**
-     * @todo finish
-     */
     private function hasCustomErrorPage()
     {
         $url = $this->getAnalyzer()->getPage()->getUrl();

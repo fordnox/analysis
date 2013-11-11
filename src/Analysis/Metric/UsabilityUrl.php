@@ -10,9 +10,6 @@ class UsabilityUrl extends Metric
     protected $impact_level     = 'high';
     protected $solve_level      = 'easy';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         if($this->getAnalyzer()->isPageUrlUserFriendly()) {

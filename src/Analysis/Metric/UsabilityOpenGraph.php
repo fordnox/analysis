@@ -15,9 +15,7 @@ class UsabilityOpenGraph extends Metric
         $content = $this->getAnalyzer()->getPage()->getContent();
         return stripos($content, '<og:')!==false;
     }
-    /**
-     * @todo finish (style)
-     */
+
     public function process()
     {
         if ($this->containsOg()){

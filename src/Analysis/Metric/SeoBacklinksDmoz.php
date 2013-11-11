@@ -22,9 +22,7 @@ class SeoBacklinksDmoz extends Metric
         while(is_object($node) && $node->find('li', $n)) $n++;
         return $n;
     }
-    /**
-     * @todo finish
-     */
+
     public function process()
     {
         $backlinks = $this->getBacklinks();

@@ -11,9 +11,6 @@ class SeoBasicsSitemap extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fail';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $url = $this->getPage()->getDomainLink().'/sitemap.xml';

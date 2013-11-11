@@ -11,9 +11,6 @@ class SeoAuthorityDomainRegistration extends Metric
     protected $solve_level      = 'hard';
     protected $pass_level       = 'pass';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $date = $this->getAnalyzer()->getDomainRegistrationDate();

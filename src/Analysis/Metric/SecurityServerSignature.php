@@ -11,9 +11,6 @@ class SecurityServerSignature extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'pass';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         if ($this->getAnalyzer()->getServer()) {

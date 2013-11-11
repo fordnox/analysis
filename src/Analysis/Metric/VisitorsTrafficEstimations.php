@@ -10,9 +10,6 @@ class VisitorsTrafficEstimations extends Metric
     protected $impact_level     = 'high';
     protected $solve_level      = 'very-hard';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $rank = $this->getAnalyzer()->getRankAlexa();

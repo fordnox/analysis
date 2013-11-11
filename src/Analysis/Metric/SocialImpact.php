@@ -11,9 +11,6 @@ class SocialImpact extends Metric
     protected $solve_level      = 'hard';
     protected $pass_level       = 'fyi';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $analyzer = $this->getAnalyzer();

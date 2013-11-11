@@ -21,9 +21,7 @@ class SeoContentHeadings extends Metric
         }
         return $headings;
     }
-    /**
-     * @todo finish
-     */
+
     public function process()
     {
         $this->setPassLevel('pass');

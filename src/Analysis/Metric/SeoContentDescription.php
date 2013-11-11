@@ -17,9 +17,7 @@ class SeoContentDescription extends Metric
         $description = $dom->find('meta[name=description]', 0);
         return $description->content;
     }
-    /**
-     * @todo finish
-     */
+
     public function process()
     {
         $description = $this->getDescription();

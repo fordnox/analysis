@@ -11,9 +11,6 @@ class SeoBacklinksCounter extends Metric
     protected $solve_level      = 'very-hard';
     protected $pass_level       = 'pass';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $backlinks = $this->getAnalyzer()->getBacklinksGoogle();

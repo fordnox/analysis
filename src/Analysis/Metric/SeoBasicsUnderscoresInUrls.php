@@ -23,9 +23,6 @@ class SeoBasicsUnderscoresInUrls extends Metric
         return $result;
     }
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $hrefs = $this->getHrefUnderscore();

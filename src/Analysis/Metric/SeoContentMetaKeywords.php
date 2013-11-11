@@ -11,9 +11,6 @@ class SeoContentMetaKeywords extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fyi';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $keywords = $this->getAnalyzer()->getMetaKeywords();

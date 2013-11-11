@@ -17,9 +17,7 @@ class SeoContentTitle extends Metric
         $title = $dom->find('title', 0);
         return $title->text;
     }
-    /**
-     * @todo finish
-     */
+
     public function process()
     {
         $length = strlen($this->getTitle());
