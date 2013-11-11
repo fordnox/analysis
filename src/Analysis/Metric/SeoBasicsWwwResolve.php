@@ -26,15 +26,18 @@ class SeoBasicsWwwResolve extends Metric
         $www_page = new Page();
         $new_page->setUrl($url);
         $www_page->setUrl($www);
-        /**
-         * @todo implement check for redirect, not only content
-         */
-        return $new_page->getContent() == $www_page->getContent();
+
+        return $new_page->getLastEffectiveUrl() == $www_page->getLastEffectiveUrl();
     }
 
     public function process()
     {
-        $this->setPassLevel('pass');
-        $this->setOutput('Perfect! Your website with and without www redirects to the same page.');
+        if ($this->checkWww()){
+            $this->setPassLevel('pass');
+            $this->setOutput('Perfect! Your website with and without www redirects to the same page.');
+        } else {
+            $this->setPassLevel('fail');
+            $this->setOutput('Too bad, it seems your website display different sites with and wihout www.');
+        }
     }
 }
