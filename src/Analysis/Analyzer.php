@@ -23,12 +23,17 @@ class Analyzer
         return $this->page;
     }
 
-    /**
-     * @see http://www.seositecheckup.com/directory_browsing.php
-     * @return bool
-     */
     public function getServerAllowsDirectoryBrowsing()
     {
+        $content = $this->getPage()->getContent();
+        if (strpos('<h1>Index of /', $content) !== false && strpos('Parent  Directory', $content) !== false) return true;
+        //@hack to access google results
+        ini_set('user_agent', 'Nokia6230/2.0 (04.12) MIDP-2.0 CLDC-1.1');
+        $url = 'http://google.com/search?q=site:'.$this->getPage()->getUrl().'+Index+of';
+        $gp = new Page();
+        $gp->setUrl($url);
+        $google_content = $gp->getContent();
+        if (strpos('Parent  Directory', $google_content) !== false) return true;
         return false;
     }
 
