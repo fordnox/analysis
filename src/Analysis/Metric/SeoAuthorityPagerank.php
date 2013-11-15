@@ -11,9 +11,6 @@ class SeoAuthorityPagerank extends Metric
     protected $solve_level      = 'hard';
     protected $pass_level       = 'moderate';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $rank = $this->getAnalyzer()->getRankPagerank();

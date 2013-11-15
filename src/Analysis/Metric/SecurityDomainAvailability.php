@@ -11,9 +11,6 @@ class SecurityDomainAvailability extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fyi';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
         $cdomain = $this->getPage()->getSldTld();
