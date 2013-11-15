@@ -181,6 +181,16 @@ class Page
         return $last_url;
     }
 
+    public function countSelector($selector)
+    {
+        $dom = $this->getSimpleHtmlDomObject();
+        $n = 0;
+        while($dom->find($selector, $n)) {
+            $n++;
+        }
+        return $n;
+    }
+
     /**
      * @see https://raw.github.com/gavingmiller/second-level-domains/master/SLDs.csv
      */

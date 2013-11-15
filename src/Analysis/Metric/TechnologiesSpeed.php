@@ -72,22 +72,12 @@ class TechnologiesSpeed extends Metric
 
     private function countCssFiles()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
-        $n = 0;
-        while($im=$dom->find('style[src], link[rel=stylesheet]',$n)){
-            $n++;
-        }
-        return $n;
+        return $this->getAnalyzer()->getPage()->countSelector('style[src], link[rel=stylesheet]');
     }
 
     private function countJsFiles()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
-        $n = 0;
-        while($im=$dom->find('script[src]',$n)){
-            $n++;
-        }
-        return $n;
+        return $this->getAnalyzer()->getPage()->countSelector('script[src]');
     }
 
     private function hasGzip()
