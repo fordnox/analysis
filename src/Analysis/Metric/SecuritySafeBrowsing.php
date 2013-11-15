@@ -2,6 +2,7 @@
 namespace Analysis\Metric;
 use Analysis\Metric;
 use Analysis\Exception;
+use Analysis\Page;
 
 class SecuritySafeBrowsing extends Metric
 {
@@ -11,11 +12,24 @@ class SecuritySafeBrowsing extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'pass';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
-        $this->setOutput('Yes');
+        if ($this->isSafe()) {
+            $this->setOutput('Yes');
+            $this->setPassLevel('pass');
+        } else {
+            $this->setOutput('No');
+            $this->setPassLevel('fail');
+        }
+    }
+
+    private function isSafe()
+    {
+        $url = $this->getAnalyzer()->getPage()->getDomainName();
+        $service_url = 'http://google.com/safebrowsing/diagnostic?site='.$url.'/&hl=en';
+        $p = new Page();
+        $p->setUrl($service_url);
+        $content = $p->getContent();
+        return strpos($content, 'Site is listed as suspicious') === false;
     }
 }
