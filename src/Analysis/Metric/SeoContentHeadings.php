@@ -26,6 +26,8 @@ class SeoContentHeadings extends Metric
     {
         $this->setPassLevel('pass');
 
+        $limit = 5;
+
         $headings = $this->getHeadings();
 
         $output='
@@ -43,8 +45,12 @@ class SeoContentHeadings extends Metric
             </tbody>
         </table>';
 
+        $i = 0;
         foreach ($headings as $name => $heading) {
-            foreach ($heading as $text) $output .= sprintf('<p><strong>%s</strong> %s</p>', strtoupper($name), $text);
+            foreach ($heading as $text) {
+                $output .= sprintf('<p><strong>%s</strong> %s</p>', strtoupper($name), $text);
+                if ($i++>$limit) break;
+            }
         }
 
         $this->setOutput($output);
