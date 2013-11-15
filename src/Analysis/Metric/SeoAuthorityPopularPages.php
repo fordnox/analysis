@@ -11,18 +11,28 @@ class SeoAuthorityPopularPages extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fyi';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
-        $output="
-        MailChimp Email Marketing Blog<br/>
-        Geo Targeting - MailChimp<br/>
-        Testimonials - Email Marketing and Email List Manager | MailChimp<br/>
-        MailChimp Integrations Directory
-        ";
+        $results = $this->getPopularPages();
+        $output=implode('<br/>'."\n", $results);
 
         $this->setOutput($output);
+    }
+
+    private function getPopularPages($num = 5)
+    {
+        ini_set('user_agent', "NokiaN70/2.0 (04.12) MIDP-2.0 CLDC-1.1");
+        $url = 'http://google.com/search?q=site:'.$this->getPage()->getUrl();
+        $gp = new \Analysis\Page();
+        $gp->setUrl($url);
+        $dom = $gp->getSimpleHtmlDomObject();
+        $list = $dom->find('div[style="clear:both"] a');
+        $pages = array();
+        $i = 0;
+        foreach ($list as $item) {
+            $pages[] = $item->text();
+            if (++$i>=$num) break;
+        }
+        return $pages;
     }
 }
