@@ -1,0 +1,4 @@
+<?php
+
+// SAMRush API KEY
+define('SM_API_KEY', '');
