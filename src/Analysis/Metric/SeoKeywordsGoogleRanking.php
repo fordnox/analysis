@@ -2,6 +2,7 @@
 namespace Analysis\Metric;
 use Analysis\Metric;
 use Analysis\Exception;
+use Analysis\SEMRushApi;
 
 class SeoKeywordsGoogleRanking extends Metric
 {
@@ -11,12 +12,10 @@ class SeoKeywordsGoogleRanking extends Metric
     protected $solve_level      = 'very-hard';
     protected $pass_level       = 'pass';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
 
+        $keywords = $this->getKeywords();
         $output='
         <table class="table table-bordered">
             <thead>
@@ -28,16 +27,37 @@ class SeoKeywordsGoogleRanking extends Metric
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td><i class="icon-minus"></i></td>
-                <td><i class="icon-minus"></i></td>
-                <td><i class="icon-minus"></i></td>
-                <td><i class="icon-minus"></i></td>
-            </tr>
+            ';
+                $format = '
+<tr><td>%s</td>
+                <td>%s</td>
+                <td>%s%%</td>
+                <td>%s</td>
+                </tr>';
+
+        foreach ($keywords as $keyword) {
+            $trend = 0;
+            if ($keyword['Td']) {
+                $trends = explode(',',$keyword['Td']);
+                $trend = abs(reset($trends) - end($trends)) * 100;
+            }
+            $output .= sprintf($format, $keyword['Ph'], $keyword['Po'], $trend, $keyword['Ur']);
+        }
+
+            $output .= '
             </tbody>
         </table>
         ';
 
         $this->setOutput($output);
+    }
+
+    private function getKeywords()
+    {
+        $domain = $this->getAnalyzer()->getPage()->getDomainName();
+        $sm = new SEMRushApi;
+        $sm->setDomain($domain);
+        $sm->setLimit(7);
+        return $sm->getKeywords();
     }
 }
