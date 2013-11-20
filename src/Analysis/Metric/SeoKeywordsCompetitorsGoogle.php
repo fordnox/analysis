@@ -2,6 +2,7 @@
 namespace Analysis\Metric;
 use Analysis\Metric;
 use Analysis\Exception;
+use Analysis\SEMRushApi;
 
 class SeoKeywordsCompetitorsGoogle extends Metric
 {
@@ -11,12 +12,21 @@ class SeoKeywordsCompetitorsGoogle extends Metric
     protected $solve_level      = 'very-hard';
     protected $pass_level       = 'fyi';
 
-    /**
-     * @todo finish
-     */
+    private function getCompetitors()
+    {
+        $sm = new SEMRushApi;
+        $domain = $this->getAnalyzer()->getPage()->getUrl();
+        $sm->setDomain($domain);
+        $sm->setLimit(10);
+        return $competitors = $sm->getCompetitors();
+    }
+
     public function process()
     {
-
+        $competitors = $this->getCompetitors();
+        $format = '
+                <td>%d</td>
+                <td>%s</td>';
         $output='
         <table class="table table-bordered">
             <thead>
@@ -26,13 +36,18 @@ class SeoKeywordsCompetitorsGoogle extends Metric
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td><i class="icon-minus"></i></td>
-                <td><i class="icon-minus"></i></td>
-            </tr>
+            <tr>';
+
+                foreach ($competitors as $k=>$competitor) {
+                    $output .= sprintf($format, $k+1, $competitor['Dn']);
+                }
+
+            $output .= '</tr>
             </tbody>
         </table>
         ';
+
+        if (!$competitors) $output = 'No competitors found';
 
         $this->setOutput($output);
     }
