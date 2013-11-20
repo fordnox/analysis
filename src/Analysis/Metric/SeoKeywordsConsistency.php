@@ -11,12 +11,10 @@ class SeoKeywordsConsistency extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'moderate';
 
-    /**
-     * @todo finish
-     */
     public function process()
     {
 
+        $keywords = $this->getKeywords();
         $output='
         <table class="table table-bordered">
             <thead>
@@ -29,19 +27,63 @@ class SeoKeywordsConsistency extends Metric
                 <th>H</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
+            <tbody>';
+            $format = '<tr>
                 <td><i class="icon-info-sign"></i></td>
-                <td>email</td>
-                <td>1</td>
-                <td><i class="icon-minus"></i></td>
-                <td><i class="icon-minus"></i></td>
-                <td><i class="icon-minus"></i></td>
-            </tr>
-            </tbody>
+                <td>%s</td>
+                <td>%d</td>
+                <td><i class="icon-%s"></i></td>
+                <td><i class="icon-%s"></i></td>
+                <td><i class="icon-%s"></i></td>
+            </tr>';
+        foreach ($keywords as $keyword) {
+            $output .= sprintf($format,
+                $keyword[0],
+                $keyword[1],
+                $keyword[2]?'ok':'minus',
+                $keyword[3]?'ok':'minus',
+                $keyword[4]?'ok':'minus'
+            );
+        }
+            $output .= '</tbody>
         </table>
         ';
 
         $this->setOutput($output);
+    }
+
+    private function getKeywords()
+    {
+        $keywords = $this->getAnalyzer()->getTagCloud(5);
+        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $result = array();
+        foreach ($keywords as $keyword=>$times) {
+            $result[] = array(
+                $keyword,
+                $times,
+                $this->inTitle($keyword, $dom),
+                $this->inDescription($keyword, $dom),
+                $this->inH($keyword, $dom),
+            );
+        }
+
+        return $result;
+    }
+
+    private function inTitle($word, \simple_html_dom $dom) {
+        return stripos($dom->find('title', 0)->text(), $word) !== false;
+    }
+
+    private function inDescription($word, \simple_html_dom $dom) {
+        if(stripos($dom->find('meta[name="description"]', 0)->content, $word) !== false) return true;
+        return false;
+    }
+
+    private function inH($word, \simple_html_dom $dom) {
+        $hs = $dom->find('h1,h2,h3,h4,h5,h6');
+        foreach($hs as $h) {
+            if (stripos($h->text(), $word) !== false) return true;
+        }
+        return false;
     }
 }
