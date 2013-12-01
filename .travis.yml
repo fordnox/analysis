@@ -9,7 +9,7 @@ before_script:
   - composer install --prefer-source --no-interaction
 
 script:
-  - phpunit .
+  - phpunit --testsuite Report
 
 notifications:
   email: false

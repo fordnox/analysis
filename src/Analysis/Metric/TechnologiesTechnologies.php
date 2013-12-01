@@ -23,7 +23,7 @@ class TechnologiesTechnologies extends Metric
 
     private function getJsCode()
     {
-        $page = $this->getAnalyzer()->getPage();
+        $page = $this->getPage();
         $dom = $page->getSimpleHtmlDomObject();
 
         $js = '';

@@ -54,7 +54,7 @@ class SeoKeywordsGoogleRanking extends Metric
 
     private function getKeywords()
     {
-        $domain = $this->getAnalyzer()->getPage()->getDomainName();
+        $domain = $this->getPage()->getDomainName();
         $sm = new SEMRushApi;
         $sm->setDomain($domain);
         $sm->setLimit(7);

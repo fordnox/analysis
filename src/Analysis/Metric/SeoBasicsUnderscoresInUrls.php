@@ -13,7 +13,7 @@ class SeoBasicsUnderscoresInUrls extends Metric
 
     private function getHrefUnderscore()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $href = $dom->find('[href*=_]');
         $result = array();
         foreach ($href as $h)

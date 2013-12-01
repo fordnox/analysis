@@ -14,7 +14,7 @@ class SeoBasicsWwwResolve extends Metric
 
     private function checkWww()
     {
-        $page = $this->getAnalyzer()->getPage();
+        $page = $this->getPage();
         $url = $page->getUrl();
         if (preg_match('|://www\.|i', $url)) {
             $www = $url;

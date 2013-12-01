@@ -13,7 +13,7 @@ class SeoBasicsUrlRewrite extends Metric
 
     private function isUrlClean()
     {
-        $url = $this->getAnalyzer()->getPage()->getUrl();
+        $url = $this->getPage()->getUrl();
         if (strpos('.php', $url) !== false || strpos('&', $url) !== false || strpos('=', $url)!==false ) return false;
         return true;
     }

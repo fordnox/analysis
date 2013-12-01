@@ -13,7 +13,7 @@ class SeoBasicsIpCanonicalization extends Metric
 
     private function isCanonicalized()
     {
-        $page = $this->getAnalyzer()->getPage();
+        $page = $this->getPage();
         $domain = $page->getDomainName();
         $ip = gethostbyname($domain);
         $page_ip = new \Analysis\Page();

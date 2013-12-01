@@ -14,7 +14,7 @@ class Usability404Page extends Metric
 
     private function hasCustomErrorPage()
     {
-        $url = $this->getAnalyzer()->getPage()->getUrl();
+        $url = $this->getPage()->getUrl();
         $p = new Page();
         $p->setUrl($url.'/path-that-shoul-not-exist');
         $contents = $p->getContent();

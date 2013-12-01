@@ -13,7 +13,7 @@ class SeoContentFrames extends Metric
 
     private function hasFrames()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $frame = $dom->find('frame', 0);
         if ($frame) return true;
         return false;

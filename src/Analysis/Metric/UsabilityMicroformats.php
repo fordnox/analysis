@@ -14,7 +14,7 @@ class UsabilityMicroformats extends Metric
 
     public function getMicroFormats()
     {
-        $content = $this->getAnalyzer()->getPage()->getContent();
+        $content = $this->getPage()->getContent();
         $mf = Mf2\parse($content);
         return $mf;
     }

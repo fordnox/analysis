@@ -13,7 +13,7 @@ class SeoBacklinksDmoz extends Metric
 
     private function getBacklinks()
     {
-        $url = $this->getAnalyzer()->getPage()->getUrl();
+        $url = $this->getPage()->getUrl();
         $p = new \Analysis\Page();
         $p->setUrl('http://www.dmoz.org/search?cat=all&type=next&all=no&start=0&q='.$url);
         $node = $p->getSimpleHtmlDomObject()->find('ol[start=1]',0);

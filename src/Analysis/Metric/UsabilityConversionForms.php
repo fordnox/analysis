@@ -31,17 +31,17 @@ class UsabilityConversionForms extends Metric
 
     private function countInputs()
     {
-        return $this->getAnalyzer()->getPage()->countSelector('form input');
+        return $this->getPage()->countSelector('form input');
     }
 
     private function countPasswordFields()
     {
-        return $this->getAnalyzer()->getPage()->countSelector('input[type=password]');
+        return $this->getPage()->countSelector('input[type=password]');
     }
 
     private function hasCaptcha()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $cap = $dom->find('input[name=recaptcha_response_field],input[name=captcha],input[name=code],input[name=secret_code],input[name=answer],input[name=Turing],input[name=nucaptcha-answer],iframe[src*=recaptcha]', 0);
         if ($cap) return true;
         return false;

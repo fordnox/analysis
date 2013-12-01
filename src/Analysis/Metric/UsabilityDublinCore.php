@@ -13,7 +13,7 @@ class UsabilityDublinCore extends Metric
 
     private function hasDublinCore()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $dc = $dom->find('meta[name^=dc.], meta[name^=DC.]', 0);
         return $dc;
     }

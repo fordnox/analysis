@@ -55,7 +55,7 @@ class SeoKeywordsConsistency extends Metric
     private function getKeywords()
     {
         $keywords = $this->getAnalyzer()->getTagCloud(5);
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $result = array();
         foreach ($keywords as $keyword=>$times) {
             $result[] = array(

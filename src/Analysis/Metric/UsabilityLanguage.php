@@ -13,15 +13,15 @@ class UsabilityLanguage extends Metric
 
     private function getContentLanguage($declared)
     {
-        $page = $this->getAnalyzer()->getPage();
+        $page = $this->getPage();
         $page->setRequestHeaders(array('Http-Accept-Language' => $declared));
         $lang = $page->getHeader('Content-Language');
         $dom = $page->getSimpleHtmlDomObject();
         $html = $dom->find('html', 0);
         $meta = $dom->find('meta[http-equiv="Content-Language"]');
-        $lang = $meta->content?$meta->content:$lang;
-        $lang = $html->{'xml:lang'}?$html->{'xml:lang'}:$lang;
-        $lang = $html->lang?$html->lang:$lang;
+        $lang = isset($meta->content) ? $meta->content : $lang;
+        $lang = $html->{'xml:lang'} ? $html->{'xml:lang'} : $lang;
+        $lang = $html->lang ? $html->lang : $lang;
         return $lang;
     }
 

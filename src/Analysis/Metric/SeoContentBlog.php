@@ -37,7 +37,7 @@ class SeoContentBlog extends Metric
 
     private function isWordPress()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $wp = $dom->find('link[href*=wp-includes]', 0);
         if ($wp) return true;
         return false;
@@ -45,7 +45,7 @@ class SeoContentBlog extends Metric
 
     private function isBlogger()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $blogger = $dom->find('link[href*=blogger]', 0);
         if ($blogger) return true;
         return false;
@@ -53,7 +53,7 @@ class SeoContentBlog extends Metric
 
     private function isPivotX()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $pivot = $dom->find('div#pivotx-nav', 0);
         if ($pivot) return true;
         return false;
@@ -61,7 +61,7 @@ class SeoContentBlog extends Metric
 
     private function hasAtom()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $atom = $dom->find('link[href*=atom]', 0);
         if ($atom) return true;
         return false;
@@ -69,7 +69,7 @@ class SeoContentBlog extends Metric
 
     private function hasRSS()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $rss = $dom->find('link[href*=rss]', 0);
         if ($rss) return true;
         return false;

@@ -13,7 +13,7 @@ class SeoContentHeadings extends Metric
 
     public function getHeadings()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $headings = array();
         for ($h = 1; $h<=6; $h++) {
             $i = 0;

@@ -12,7 +12,7 @@ class UsabilityOpenGraph extends Metric
     protected $pass_level       = 'pass';
 
     private function containsOg(){
-        $content = $this->getAnalyzer()->getPage()->getContent();
+        $content = $this->getPage()->getContent();
         return stripos($content, '<og:')!==false;
     }
 

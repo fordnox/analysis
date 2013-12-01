@@ -14,7 +14,7 @@ class SecurityWot extends Metric
     private function getWot()
     {
         $api = 'http://api.mywot.com/0.4/public_link_json?hosts=';
-        $domain = $this->getAnalyzer()->getPage()->getDomainName();
+        $domain = $this->getPage()->getDomainName();
         $page = new \Analysis\Page();
         $page->setUrl($api . $domain .'/');
         $result = json_decode($page->getContent(), true);
