@@ -13,14 +13,14 @@ class SeoContentImages extends Metric
 
     public function getImagesCount()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $n = 0;
         $alt = 0;
         while($im=$dom->find('img',$n)){
             if (!$im->alt) $alt++;
             $n++;
         }
-        return array('images'=>$n, 'alt'=>$alt);
+        return array($n, $alt);
     }
 
     public function process()

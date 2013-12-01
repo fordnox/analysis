@@ -35,8 +35,7 @@
         "files": [
             "vendor/novutec/WhoisParser/Parser.php",
             "vendor/novutec/DomainParser/Parser.php",
-            "vendor/novutec/TypoSquatting/Typo.php",
-            "vendor/seostats/seostats/SEOstats/bootstrap.php"
+            "vendor/novutec/TypoSquatting/Typo.php"
         ],
         "psr-0": {
             "Analysis\\": "src/"

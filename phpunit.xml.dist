@@ -15,4 +15,9 @@
             <directory>./tests/Analysis/</directory>
         </testsuite>
     </testsuites>
+
+    <php>
+        <var name="TEST_URL" value="http://www.google.com/doodles/about" />
+    </php>
+
 </phpunit>

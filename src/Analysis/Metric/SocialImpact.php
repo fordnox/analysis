@@ -14,7 +14,6 @@ class SocialImpact extends Metric
     public function process()
     {
         $analyzer = $this->getAnalyzer();
-        $analyzer->getSocialDelicious();
 
 $output=<<<EOL
 <ul>

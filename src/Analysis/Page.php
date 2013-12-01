@@ -138,7 +138,9 @@ class Page
 
     private function _loadContent()
     {
+        $client = new \Buzz\Client\Curl();
         $browser = new \Buzz\Browser();
+        $browser->setClient($client);
         $response = $browser->get($this->getUrl(), $this->request_headers);
         $this->headers = $response->getHeaders();
         $this->content = $response->getContent();

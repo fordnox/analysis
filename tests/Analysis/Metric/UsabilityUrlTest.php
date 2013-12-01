@@ -5,6 +5,7 @@ class Analysis_Metric_UsabilityUrlTest extends PHPUnit_Framework_TestCase
     {
         $analyzer = new Analysis\Analyzer();
         $page = new Analysis\Page();
+        $page->setUrl($GLOBALS['TEST_URL']);
 
         $metric = new Analysis\Metric\UsabilityUrl();
         $metric->setAnalyzer($analyzer);

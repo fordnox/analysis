@@ -4,7 +4,7 @@ class Analysis_Metric_UsabilityPageSizeTest extends PHPUnit_Framework_TestCase
     public function testProcess()
     {
         $page = new Analysis\Page();
-        $page->setUrl('http://www.google.com');
+        $page->setUrl($GLOBALS['TEST_URL']);
 
         $analyzer = new Analysis\Analyzer();
         $analyzer->setPage($page);

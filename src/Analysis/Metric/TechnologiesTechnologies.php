@@ -14,8 +14,11 @@ class TechnologiesTechnologies extends Metric
 
     private function getPhpVersion()
     {
-        $headers = $this->getAnalyzer()->getHeaders();
-        return $headers['X-Powered-By'];
+        $server = $this->getAnalyzer()->getServer();
+        if($server && strpos($server, 'php')) {
+            return $server;
+        }
+        return null;
     }
 
     private function getJsCode()
@@ -51,6 +54,9 @@ class TechnologiesTechnologies extends Metric
         return strpos($js, 'RequireJS') !== false;
     }
 
+    /**
+     * @todo check again. Do not show unavailable items
+     */
     public function process()
     {
         $server = $this->getAnalyzer()->getServer();
@@ -69,10 +75,12 @@ class TechnologiesTechnologies extends Metric
         </ul>
         ',
         $analytics?'ok':'minus', 'Google Analytics',
-        $server?'ok':'minus',    $server?$server:'Apache 2',
-        $php?'ok':'minus',       $php?$php:'PHP 5.3',
+        $server?'ok':'minus',    $server ? $server : 'Apache 2',
+        $php?'ok':'minus',       $php ? $php : '-',
         $jQuery?'ok':'minus',    'jQuery',
-        $require?'ok':'minus',   'RequireJS');
+        $require?'ok':'minus',   'RequireJS'
+        );
+
         $this->setOutput($output);
     }
 }

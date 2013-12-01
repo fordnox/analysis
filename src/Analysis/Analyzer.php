@@ -236,8 +236,10 @@ class Analyzer
 
     public function pageContainsEmails()
     {
+        $results = array();
         $content = $this->getPage()->getContent();
-        return preg_match('/((([a-z]|\d|[!#\$%&\'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&\'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?/i', $content);
+        $contains = preg_match('/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/si', $content, $results);
+        return $contains;
     }
 
     public function getBacklinksGoogle()
@@ -370,8 +372,7 @@ class Analyzer
     {
         $dom = $this->getPage()->getSimpleHtmlDomObject();
         $keywords = $dom->find('meta[name=keywords]');
-        if ($keywords) $keywords = $keywords->content;
-        return $keywords;
+        return isset($keywords->content) ? $keywords->content : null;
     }
 
     public function getTextHtmlRatio()
@@ -410,6 +411,9 @@ class Analyzer
         $full_headers = array();
         $headers = $this->getPage()->getResponseHeaders();
         foreach ($headers as $header) {
+            if(!strpos($header, ':')) {
+                continue;
+            }
             list($key, $val) = explode(': ', $header, 2);
             $full_headers[$key] = $val;
         }
@@ -418,8 +422,16 @@ class Analyzer
 
     public function getServer()
     {
-        $headers = $this->getHeaders();
-        return $headers['Server'];
+        $server_headers = $this->getHeaders();
+        if(isset($server_headers['Server'])) {
+            return $server_headers['Server'];
+        }
+
+        if(isset($server_headers['X-Powered-By'])) {
+            return $server_headers['X-Powered-By'];
+        }
+
+        return null;
     }
 
     public function containsAnalytics()
