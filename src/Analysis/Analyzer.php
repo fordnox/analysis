@@ -1,9 +1,9 @@
 <?php
 namespace Analysis;
-use Analysis\Page;
-use Novutec\TypoSquatting\Typo;
-use Novutec\DomainParser\Parser;
-use Novutec\WhoisParser\Parser as WhoisParser;
+
+require_once 'novutec/WhoisParser/Parser.php';
+require_once 'novutec/DomainParser/Parser.php';
+require_once 'novutec/TypoSquatting/Typo.php';
 
 class Analyzer
 {
@@ -81,7 +81,8 @@ class Analyzer
     private function getSimilarTyposDomains(){
         $domain = $this->getPage()->getSldTld();
         $tld = $this->getPage()->getDomainTld(false);
-        $Typo = new Typo();
+
+        $Typo = new \Novutec\TypoSquatting\Typo;
         $Typo->setFormat('array');
         $result = $Typo->lookup($domain, $tld);
         return $result['typosByMissedLetters'];
@@ -267,7 +268,7 @@ class Analyzer
     {
         $domain = $this->getPage()->getSldTld();
 
-        $Parser = new WhoisParser();
+        $Parser = $this->_getWhoisParser();
         $Parser->setFormat('array');
         $result = $Parser->lookup($domain);
         return $result['expires'];
@@ -277,7 +278,7 @@ class Analyzer
     {
         $domain = $this->getPage()->getSldTld();
 
-        $Parser = new WhoisParser();
+        $Parser = $this->_getWhoisParser();
         $Parser->setFormat('array');
         $result = $Parser->lookup($domain);
         return $result['created'];
@@ -338,7 +339,7 @@ class Analyzer
     {
         $domain = $this->getPage()->getSldTld();
 
-        $Parser = new WhoisParser();
+        $Parser = $this->_getWhoisParser();
         $Parser->setFormat('array');
         $result = $Parser->lookup($domain);
 
@@ -438,5 +439,10 @@ class Analyzer
     {
         $content = $this->getPage()->getContent();
         return strpos($content,'pageTracker._trackPageview();') !== false || strpos($content, "'.google-analytics.com/ga.js';") !== false;
+    }
+
+    private function _getWhoisParser()
+    {
+        return new \Novutec\WhoisParser\Parser();
     }
 }

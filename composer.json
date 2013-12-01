@@ -32,13 +32,10 @@
         }
     ],
     "autoload": {
-        "files": [
-            "vendor/novutec/WhoisParser/Parser.php",
-            "vendor/novutec/DomainParser/Parser.php",
-            "vendor/novutec/TypoSquatting/Typo.php"
-        ],
         "psr-0": {
             "Analysis\\": "src/"
         }
-    }
+    },
+    "include-path": ["vendor/"]
+
 }
