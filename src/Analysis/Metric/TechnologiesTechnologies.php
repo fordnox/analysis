@@ -54,9 +54,6 @@ class TechnologiesTechnologies extends Metric
         return strpos($js, 'RequireJS') !== false;
     }
 
-    /**
-     * @todo check again. Do not show unavailable items
-     */
     public function process()
     {
         $server = $this->getAnalyzer()->getServer();
@@ -65,21 +62,18 @@ class TechnologiesTechnologies extends Metric
         $js = $this->getJsCode();
         $jQuery = $this->containsJQuery($js);
         $require = $this->containsRequireJS($js);
-        $output=sprintf('
-        <ul class="unstyled">
-            <li><i class="icon-%s"></i> %s</li>
-            <li><i class="icon-%s"></i> %s</li>
-            <li><i class="icon-%s"></i> %s</li>
-            <li><i class="icon-%s"></i> %s</li>
-            <li><i class="icon-%s"></i> %s</li>
-        </ul>
-        ',
-        $analytics?'ok':'minus', 'Google Analytics',
-        $server?'ok':'minus',    $server ? $server : 'Apache 2',
-        $php?'ok':'minus',       $php ? $php : '-',
-        $jQuery?'ok':'minus',    'jQuery',
-        $require?'ok':'minus',   'RequireJS'
-        );
+
+        $item = '<li><i class="icon-ok"></i> %s</li>';
+        $output='
+        <ul class="unstyled">';
+
+        $output.=  $analytics ?  sprintf($item, 'Google Analytics'):'';
+        $output.=  $server    ?  sprintf($item, $server):'';
+        $output.=  $php       ?  sprintf($item, $php):'';
+        $output.=  $jQuery    ?  sprintf($item, 'jQuery'):'';
+        $output.=  $require   ?  sprintf($item, 'RequireJS'):'';
+
+        $output.='</ul>';
 
         $this->setOutput($output);
     }
