@@ -2,6 +2,7 @@
 namespace Analysis\Metric;
 use Analysis\Metric;
 use Analysis\Exception;
+use Analysis\Page;
 
 class UsabilityLanguage extends Metric
 {
@@ -11,11 +12,10 @@ class UsabilityLanguage extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'pass';
 
-    private function getContentLanguage($declared)
+    private function getDeclaredLanguage()
     {
         $page = $this->getPage();
-        $page->setRequestHeaders(array('Http-Accept-Language' => $declared));
-        $lang = $page->getHeader('Content-Language');
+        $lang = $page->getHeader('Content-Language')?$page->getHeader('Content-Language'):'none';
         $dom = $page->getSimpleHtmlDomObject();
         $html = $dom->find('html', 0);
         $meta = $dom->find('meta[http-equiv="Content-Language"]');
@@ -25,10 +25,24 @@ class UsabilityLanguage extends Metric
         return $lang;
     }
 
+    private function getContentLanguage()
+    {
+        $lang = 'unknown';
+        $text = $this->getAnalyzer()->getPage()->getTextContent();
+        $uri = 'http://translate.google.com/translate_a/t?client=t&sl=auto&tl=it&hl=lt&sc=2&ie=UTF-8&oe=UTF-8&uptl=it&alttl=en&pc=1&oc=1&otf=1&ssel=0&tsel=0&q='.rawurlencode(mb_substr($text, 0, 100));
+        $page = new Page();
+        $page->setUrl($uri);
+        $content = $page->getContent();
+        if (preg_match('/,,"([^"]+)",,/', $content, $matches)) {
+            $lang = $matches[1];
+        }
+        return $lang;
+    }
+
     public function process()
     {
-        $declare = 'en-US';
-        $detect = $this->getContentLanguage($declare);
+        $declare = $this->getDeclaredLanguage();
+        $detect = $this->getContentLanguage();
         if (!$detect) $detect = 'none';
         if ($declare == $detect) $this->setPassLevel('pass');
         $this->setOutput('Declared: '.$declare.' </br>Detected: '.$detect);
