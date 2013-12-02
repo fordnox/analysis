@@ -15,7 +15,7 @@ class SeoKeywordsCompetitorsGoogle extends Metric
     private function getCompetitors()
     {
         $sm = new SEMRushApi;
-        $domain = $this->getAnalyzer()->getPage()->getUrl();
+        $domain = $this->getPage()->getUrl();
         $sm->setDomain($domain);
         $sm->setLimit(10);
         return $competitors = $sm->getCompetitors();

@@ -26,7 +26,7 @@ class VisitorsDistinctiveAudience extends Metric
     }
 
     private function getInfo() {
-        $domain = $this->getAnalyzer()->getPage()->getDomainName();
+        $domain = $this->getPage()->getDomainName();
         $server = 'http://www.alexa.com/siteinfo/'.$domain;
         $page = new Page;
         $page->setUrl($server);

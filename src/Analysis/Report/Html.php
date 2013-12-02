@@ -3,7 +3,7 @@ namespace Analysis\Report;
 use Analysis\Report;
 use Doc\Domain;
 
-class Html
+class Html implements ReportRenderer
 {
 
     public function setReport(Report $report)

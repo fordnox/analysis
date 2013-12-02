@@ -13,9 +13,9 @@ class SeoContentDescription extends Metric
 
     public function getDescription()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $description = $dom->find('meta[name=description]', 0);
-        return $description->content;
+        return isset($description->content) ? $description->content : null;
     }
 
     public function process()

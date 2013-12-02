@@ -13,7 +13,7 @@ class SeoContentTitle extends Metric
 
     public function getTitle()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $title = $dom->find('title', 0);
         return $title->text;
     }

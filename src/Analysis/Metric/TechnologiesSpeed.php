@@ -65,19 +65,19 @@ class TechnologiesSpeed extends Metric
 
     private function hasInlineCss()
     {
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         if ($dom->find('[style]', 0)) return true;
         return false;
     }
 
     private function countCssFiles()
     {
-        return $this->getAnalyzer()->getPage()->countSelector('style[src], link[rel=stylesheet]');
+        return $this->getPage()->countSelector('style[src], link[rel=stylesheet]');
     }
 
     private function countJsFiles()
     {
-        return $this->getAnalyzer()->getPage()->countSelector('script[src]');
+        return $this->getPage()->countSelector('script[src]');
     }
 
     private function hasGzip()

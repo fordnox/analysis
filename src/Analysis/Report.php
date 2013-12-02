@@ -1,7 +1,6 @@
 <?php
 namespace Analysis;
-use Analysis\Page;
-use Doc\Domain;
+use Analysis\Report\ReportRenderer;
 
 class Report
 {
@@ -14,6 +13,27 @@ class Report
     private $page;
 
     private $translation;
+
+    private $renderer;
+
+    /**
+     * @return mixed
+     */
+    public function getRenderer()
+    {
+        if(!$this->renderer) {
+            $this->renderer = new Report\Text();
+        }
+        return $this->renderer;
+    }
+
+    /**
+     * @param mixed $renderer
+     */
+    public function setRenderer(ReportRenderer $renderer)
+    {
+        $this->renderer = $renderer;
+    }
 
     public function getDescription()
     {
@@ -40,6 +60,9 @@ class Report
 
     public function getTranslation()
     {
+        if(!$this->translation) {
+            $this->translation = new Translation\En();
+        }
         return $this->translation;
     }
 
@@ -50,6 +73,10 @@ class Report
 
     public function getAnalyzer()
     {
+        if(!$this->analyzer) {
+            $this->analyzer = new Analyzer();
+        }
+        $this->analyzer->setPage($this->getPage());
         return $this->analyzer;
     }
 
@@ -77,9 +104,9 @@ class Report
     {
         foreach($this->_getMetrics() as $mc) {
             $metric = new $mc();
-            $metric->setPage($this->page);
-            $metric->setAnalyzer($this->analyzer);
-            $metric->setTranslation($this->translation);
+            $metric->setPage($this->getPage());
+            $metric->setAnalyzer($this->getAnalyzer());
+            $metric->setTranslation($this->getTranslation());
 
             try {
                 $metric->process();
@@ -96,6 +123,7 @@ class Report
         return $this->metrics;
     }
 
+    //@todo remove namespace dependency
     protected function _getMetrics()
     {
         $classes = array();
@@ -104,5 +132,13 @@ class Report
             $classes[] = '\\Analysis\\Metric\\'.pathinfo($file, PATHINFO_FILENAME);
         }
         return $classes;
+    }
+
+    public function render()
+    {
+        $renderer = $this->getRenderer();
+        $this->generate();
+        $renderer->setReport($this);
+        return $renderer->getOutput();
     }
 }

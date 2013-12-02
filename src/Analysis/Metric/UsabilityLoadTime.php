@@ -14,7 +14,7 @@ class UsabilityLoadTime extends Metric
     public function process()
     {
         $start = microtime(TRUE);
-        $content = $this->getAnalyzer()->getPage()->getContent();
+        $content = $this->getPage()->getContent();
         $end = microtime(TRUE);
         $diff = $end-$start;
         $speed = strlen($content)/1024/($diff?$diff:1);

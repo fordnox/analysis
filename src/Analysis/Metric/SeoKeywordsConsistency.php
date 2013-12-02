@@ -55,7 +55,7 @@ class SeoKeywordsConsistency extends Metric
     private function getKeywords()
     {
         $keywords = $this->getAnalyzer()->getTagCloud(5);
-        $dom = $this->getAnalyzer()->getPage()->getSimpleHtmlDomObject();
+        $dom = $this->getPage()->getSimpleHtmlDomObject();
         $result = array();
         foreach ($keywords as $keyword=>$times) {
             $result[] = array(
@@ -75,7 +75,9 @@ class SeoKeywordsConsistency extends Metric
     }
 
     private function inDescription($word, \simple_html_dom $dom) {
-        if(stripos($dom->find('meta[name="description"]', 0)->content, $word) !== false) return true;
+        $desc = $dom->find('meta[name="description"]', 0);
+        $description = isset($desc->content) ? $desc->content : '';
+        if(stripos($description, $word) !== false) return true;
         return false;
     }
 

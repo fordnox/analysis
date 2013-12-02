@@ -15,7 +15,7 @@ class VisitorsAdwordsTraffic extends Metric
 
     public function getTraffic()
     {
-        $domain = $this->getAnalyzer()->getPage()->getDomainName();
+        $domain = $this->getPage()->getDomainName();
         $sm = new SEMRushApi();
         $sm->setDomain($domain);
         return $sm->AdwordsTraffic();

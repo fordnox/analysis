@@ -2,7 +2,7 @@
 namespace Analysis\Report;
 use Analysis\Report;
 
-class Text
+class Text implements ReportRenderer
 {
     public function setReport(Report $report)
     {

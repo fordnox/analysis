@@ -1,8 +1,8 @@
 {
-    "name": "fordnox/1pagerank.com",
-    "description": "1PageRank.com SEO analytics tool",
-    "keywords": ["seo", "seo-analysis", "pagerank", "1pagerank", "bot", "scrapper", "robot"],
-    "homepage": "http://github.com/fordnox/1pagerank.com",
+    "name": "fordnox/analysis",
+    "description": "SEO analytics tool",
+    "keywords": ["seo", "seo-analysis", "pagerank", "bot", "scrapper", "robot"],
+    "homepage": "http://github.com/fordnox/analysis",
     "type": "library",
     "author": "Andrius Putna",
     "license": "Apache-2.0",
@@ -32,14 +32,10 @@
         }
     ],
     "autoload": {
-        "files": [
-            "vendor/novutec/WhoisParser/Parser.php",
-            "vendor/novutec/DomainParser/Parser.php",
-            "vendor/novutec/TypoSquatting/Typo.php",
-            "vendor/seostats/seostats/SEOstats/bootstrap.php"
-        ],
         "psr-0": {
             "Analysis\\": "src/"
         }
-    }
+    },
+    "include-path": ["vendor/"]
+
 }

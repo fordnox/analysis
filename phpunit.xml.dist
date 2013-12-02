@@ -6,13 +6,18 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false"
+         stopOnFailure="true"
+         syntaxCheck="true"
          bootstrap="tests/bootstrap.php"
         >
     <testsuites>
-        <testsuite name="1Pagerank Test Suite">
-            <directory>./tests/Analysis/</directory>
+        <testsuite name="Report">
+            <file>./tests/Analysis/ReportTest.php</file>
         </testsuite>
     </testsuites>
+
+    <php>
+        <var name="TEST_URL" value="http://www.google.com/doodles/about" />
+    </php>
+
 </phpunit>

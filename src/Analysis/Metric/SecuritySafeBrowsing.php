@@ -25,7 +25,7 @@ class SecuritySafeBrowsing extends Metric
 
     private function isSafe()
     {
-        $url = $this->getAnalyzer()->getPage()->getDomainName();
+        $url = $this->getPage()->getDomainName();
         $service_url = 'http://google.com/safebrowsing/diagnostic?site='.$url.'/&hl=en';
         $p = new Page();
         $p->setUrl($service_url);

@@ -4,10 +4,8 @@ class Analysis_ReportTest extends PHPUnit_Framework_TestCase
 {
     public function testReport()
     {
-        $url = 'http://www.google.com/doodles/about';
-
         $page = new Analysis\Page();
-        $page->setUrl($url);
+        $page->setUrl($GLOBALS['TEST_URL']);
 
         $analyzer = new Analysis\Analyzer();
         $analyzer->setPage($page);

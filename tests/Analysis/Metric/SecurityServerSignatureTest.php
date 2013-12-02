@@ -1,5 +1,5 @@
 <?php
-class Analysis_Metric_SecurityEmailPrivacyTest extends PHPUnit_Framework_TestCase
+class Analysis_Metric_SecurityServerSignatureTest extends PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
@@ -9,11 +9,11 @@ class Analysis_Metric_SecurityEmailPrivacyTest extends PHPUnit_Framework_TestCas
         $analyzer = new Analysis\Analyzer();
         $analyzer->setPage($page);
 
-        $metric = new Analysis\Metric\SecurityEmailPrivacy();
+        $metric = new Analysis\Metric\SecurityServerSignature();
         $metric->setAnalyzer($analyzer);
         $metric->setPage($page);
         $metric->process();
 
-        $this->assertEquals($metric->getPassLevel(), 'fail');
+        $this->assertEquals($metric->getPassLevel(), 'pass');
     }
 }
