@@ -61,7 +61,7 @@ class Analyzer
 
     private function isDomainAvailableForRegistration($domain){
 
-        if (checkdnsrr($domain, 'ANY')) return false;
+        if (checkdnsrr($domain.'.', 'ANY')) return false;
         $whois = $this->getWhois($domain);
         if ($whois['nameserver'] || $whois['expires'] || $whois['contacts']) return false;
         return true;
