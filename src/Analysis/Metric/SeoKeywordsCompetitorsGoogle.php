@@ -23,7 +23,13 @@ class SeoKeywordsCompetitorsGoogle extends Metric
 
     public function process()
     {
-        $competitors = $this->getCompetitors();
+        try {
+            $competitors = $this->getCompetitors();
+        } catch(\Exception $e) {
+            error_log($e);
+            return 'No competitors found';
+        }
+
         $format = '
                 <td>%d</td>
                 <td>%s</td>';
@@ -46,8 +52,6 @@ class SeoKeywordsCompetitorsGoogle extends Metric
             </tbody>
         </table>
         ';
-
-        if (!$competitors) $output = 'No competitors found';
 
         $this->setOutput($output);
     }

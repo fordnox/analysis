@@ -14,8 +14,13 @@ class SeoKeywordsGoogleRanking extends Metric
 
     public function process()
     {
+        try {
+            $keywords = $this->getKeywords();
+        } catch (\Exception $e) {
+            error_log($e);
+            return 'No keywords found';
+        }
 
-        $keywords = $this->getKeywords();
         $output='
         <table class="table table-bordered">
             <thead>

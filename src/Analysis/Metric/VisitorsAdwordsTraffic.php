@@ -13,7 +13,7 @@ class VisitorsAdwordsTraffic extends Metric
     protected $solve_level      = 'easy';
     protected $pass_level       = 'fyi';
 
-    public function getTraffic()
+    private function getTraffic()
     {
         $domain = $this->getPage()->getDomainName();
         $sm = new SEMRushApi();
@@ -37,9 +37,13 @@ class VisitorsAdwordsTraffic extends Metric
 
     public function process()
     {
-        $traffic = $this->getTraffic();
-
-        $traffic = $this->toPercent($traffic[0]);
+        try {
+            $traffic = $this->getTraffic();
+            $traffic = $this->toPercent($traffic[0]);
+        } catch(\Exception $e) {
+            error_log($e);
+            return 'Traffic information can not be retrieved';
+        }
 
         $output = sprintf('<img src="https://chart.googleapis.com/chart?cht=p&chd=t:%d,%d&chs=200x100&chdl=AdWords|Organic" alt="Traffic">', $traffic['At'], $traffic['Ot']);
         $this->setOutput($output);
